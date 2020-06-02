@@ -1,6 +1,6 @@
 {
     "name": "forsteri-cli",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "main": "./bin/index.js",
     "bin": {
         "forsteri": "./bin/index.js"

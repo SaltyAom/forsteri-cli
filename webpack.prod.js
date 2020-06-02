@@ -32,35 +32,6 @@ module.exports = {
     },
     optimization: {
         minimize: true,
-        minimizer: [new TerserPlugin()],
-        splitChunks: {
-            chunks: "all",
-            maxInitialRequests: Infinity,
-            minSize: 0,
-            cacheGroups: {
-                default: {
-                    minChunks: 2,
-                    reuseExistingChunk: true
-                },
-                vendor: {
-                    test: /[\\/]node_modules[\\/]/,
-                    name(module) {
-                        const packageName = module.context.match(
-                            /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-                        )[1]
-
-                        return `${packageName.replace("@", "")}`
-                    }
-                },
-                component: {
-                    test: /\/(.*?).tsx$/,
-                    name(module) {
-                        const componentName = module.request.split("/")[module.request.split("/").length - 1]
-
-                        return `${componentName.replace(".tsx", "")}`
-                    }
-                }
-            }
-        }
+        minimizer: [new TerserPlugin()]
     }
 }

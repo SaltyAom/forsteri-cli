@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 const { join } = require("path"),
     { readFileSync, existsSync } = require("fs"),
-    copy = require("ncp")
+    copy = require("ncp"),
+    rimraf = require("rimraf")
 
 const colors = require("colors"),
     ora = require("ora")
@@ -10,6 +11,11 @@ const webpack = require("webpack")
 const webpackDevServer = require("webpack-dev-server")
 
 const execAt = process.cwd()
+
+const removePreviousBuilt = (built = "/dist") => {
+    if(existsSync(join(execAt, built)))
+        rimraf.sync(join(execAt, built))
+}
 
 const checkRequirement = (callback) => {
     if(!existsSync(join(execAt + "/src/index.tsx"))) {
@@ -121,6 +127,7 @@ const productionBuild = () => new Promise((resolve, reject) => {
         ...clientConfig
     }
 
+    removePreviousBuilt()
     copy(join(execAt, "public"), join(execAt, "dist"))
 
     webpack(config)
@@ -160,6 +167,8 @@ const buildComponents = () => new Promise((resolve, reject) => {
         },
         ...clientConfig
     }
+
+    removePreviousBuilt('components')
 
     webpack(config)
         .run((err, stat) => {
